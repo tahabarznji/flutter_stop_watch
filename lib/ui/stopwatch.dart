@@ -2,8 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_stop_watch/ui/elapsed_time_text.dart';
-import 'package:flutter_stop_watch/ui/elapsed_time_text_basic.dart';
+import 'package:flutter_stop_watch/ui/reset_button.dart';
+import 'package:flutter_stop_watch/ui/start_stop_button.dart';
+
 import 'package:flutter_stop_watch/ui/stop_watch_renderer.dart';
 
 class Stopwatch extends StatefulWidget {
@@ -47,9 +48,31 @@ class _StopwatchState extends State<Stopwatch>
     return LayoutBuilder(
       builder: (context, constraints) {
         final radouis = constraints.maxWidth / 2;
-        return StopWatchRenderer(
-          radouis: radouis,
-          elapsed: _elapsed,
+        return Stack(
+          children: [
+            StopWatchRenderer(elapsed: _elapsed, radouis: radouis),
+            Align(
+              alignment: Alignment.bottomLeft,
+              child: SizedBox(
+                width: 80,
+                height: 80,
+                child: ResetButton(
+                  onPressed: () {},
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: SizedBox(
+                width: 80,
+                height: 80,
+                child: StartStopButton(
+                  isRuning: true,
+                  onPressed: () {},
+                ),
+              ),
+            )
+          ],
         );
       },
     );

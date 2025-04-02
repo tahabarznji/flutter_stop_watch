@@ -34,7 +34,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Padding(
           padding: EdgeInsets.all(32),
           child: AspectRatio(
-            aspectRatio: 1.0, child: Stopwatch(), //it remove the comma here
+            aspectRatio: 0.85, child: Stopwatch(), //it remove the comma here
           ),
         ),
       ),

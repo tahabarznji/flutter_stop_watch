@@ -14,7 +14,7 @@ class StartStopButton extends StatelessWidget {
           onTap: onPressed,
           child: Align(
             alignment: Alignment.center,
-            child: Text('Reset'),
+            child: Text(isRuning ? 'Stop' : 'Start'),
           ),
         ),
       ),
