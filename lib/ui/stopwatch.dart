@@ -17,7 +17,10 @@ class Stopwatch extends StatefulWidget {
 class _StopwatchState extends State<Stopwatch>
     with SingleTickerProviderStateMixin {
   late final Ticker _ticker;
-  Duration _elapsed = Duration.zero;
+  Duration _prevoislyElapsed = Duration.zero;
+  Duration _currentlyElapsed = Duration.zero;
+  Duration get _elapsed => _prevoislyElapsed + _currentlyElapsed;
+  bool isRuning = false;
 
   @override
   void initState() {
@@ -25,10 +28,10 @@ class _StopwatchState extends State<Stopwatch>
 
     _ticker = this.createTicker((elapsed) {
       setState(() {
-        _elapsed = elapsed;
+        _currentlyElapsed = elapsed;
       });
     });
-    _ticker.start();
+
     // _timer = Timer.periodic(Duration(microseconds: 50), (timer) {
     //   final now = DateTime.now();
     //   setState(() {
@@ -41,6 +44,27 @@ class _StopwatchState extends State<Stopwatch>
   void dispose() {
     _ticker.stop();
     super.dispose();
+  }
+
+  void _toggleRuning() {
+    setState(() {
+      isRuning = !isRuning;
+      if (isRuning) {
+        _ticker.start();
+      } else {
+        _ticker.stop();
+        _prevoislyElapsed += _currentlyElapsed;
+        _currentlyElapsed = Duration.zero;
+      }
+    });
+  }
+
+  void reset() {
+    setState(() {
+      isRuning = false;
+      _prevoislyElapsed = Duration.zero;
+      _currentlyElapsed = Duration.zero;
+    });
   }
 
   @override
@@ -57,7 +81,7 @@ class _StopwatchState extends State<Stopwatch>
                 width: 80,
                 height: 80,
                 child: ResetButton(
-                  onPressed: () {},
+                  onPressed: reset,
                 ),
               ),
             ),
@@ -67,8 +91,8 @@ class _StopwatchState extends State<Stopwatch>
                 width: 80,
                 height: 80,
                 child: StartStopButton(
-                  isRuning: true,
-                  onPressed: () {},
+                  isRuning: isRuning,
+                  onPressed: _toggleRuning,
                 ),
               ),
             )
